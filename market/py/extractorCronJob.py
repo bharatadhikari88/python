@@ -13,4 +13,5 @@ from crontab import CronTab
 
 if __name__== "__main__":
 	cron = CronTab(tab="""*/1 *  * * 0-5 python3 Extractor.py""")
+	print("Added in cron")
 	cron.write()

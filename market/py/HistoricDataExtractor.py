@@ -30,16 +30,19 @@ class HistoricData:
     def writeToCsv(self,stock):
         filePath = self.extractor.BASE_FOLDER + stock + ".csv"
 
-        record = nsepy.get_history(symbol=quote(stock), start=self.startDate, end=self.endDate)
-        record.reset_index(level=0, inplace=True)
-        record["PClose"] = record["Prev Close"]
-
-        df = DataFrame(record,columns=['Date','PClose','Open','High','Low','Close'])
+        df = self.stockData(stock)
 
         if path.exists(filePath):
             df.to_csv(filePath,mode='a',index=False, header=False)
         else:
             df.to_csv(filePath,index=False)
+            
+    def stockData(self,stock):
+        record = nsepy.get_history(symbol=quote(stock), start=self.startDate, end=self.endDate)
+        record.reset_index(level=0, inplace=True)
+        record["PClose"] = record["Prev Close"]
+        return DataFrame(record,columns=['Date','PClose','Open','High','Low','Close'])
+    
             
       
     def extractHistoricData(self):
